@@ -14,16 +14,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import EllipsisIcon from "../svgs/EllipsisIcon";
+import { FilterIcon } from "lucide-react";
 
-export function Filter() {
+export function FilterTable() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="size-8 p-2 cursor-pointer hover:bg-gray-100 rounded-full shadow-none border-none"
+          className=" border cursor-pointer hover:bg-gray-100 transition-colors rounded-lg shadow-none"
         >
-          <EllipsisIcon />
+          <div className="flex items-center gap-2">
+            <FilterIcon className="size-3 text-gray-600" />
+            <p className="text-gray-600 text-xs font-medium">Filter</p>
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">

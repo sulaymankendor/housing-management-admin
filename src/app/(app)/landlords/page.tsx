@@ -11,7 +11,7 @@ export default function Landlord() {
           return (
             <StatCard
               key={index}
-              icon={<Backpack className="text-gray-600" />}
+              icon={<Backpack className="text-gray-600" size={17} />}
               title={"Total Balance"}
               stat="D2,000"
             />

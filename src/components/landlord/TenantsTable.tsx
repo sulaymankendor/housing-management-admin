@@ -15,26 +15,31 @@ import { PlusIcon } from "lucide-react";
 import { Filter } from "./Filter";
 import { useRouter } from "next/navigation";
 
-export default function TenantsTable() {
+export default function Tenants() {
   const router = useRouter();
   return (
     <div className="relative w-full mx-auto mt-10 ">
       <div className="flex justify-between items-center border-t border-x border-gray-200 p-5 rounded-t-2xl bg-white">
         <div>
-          <h1 className="font-semibold text-lg text-gray-800">Tenants</h1>
-          <p className="text-gray-500 text-sm">
+          <h1 className="font-semibold text-lg text-black">Tenants</h1>
+          <p className="text-gray-500 text-xs">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesent
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-1 cursor-pointer hover:bg-cyan-600/90 transition bg-cyan-500 text-white font-semibold px-4 whitespace-nowrap py-[10px] text-xs rounded-xl">
+          <button
+            onClick={() => {
+              router.push("/landlords/add-tenant-form");
+            }}
+            className="flex shadow-sm inset-shadow-2xs items-center gap-1 cursor-pointer hover:bg-cyan-600/90 transition bg-cyan-500 text-white font-semibold px-3 whitespace-nowrap py-[10px] text-xs rounded-md"
+          >
             <PlusIcon className="size-4" />
-            Add Landlord
+            Add Tenant
           </button>
         </div>
       </div>
       {/* Horizontal scroll container */}
-      <div className="overflow-x-auto rounded-b-2xl border border-gray-200 py-7 bg-white">
+      <div className="overflow-x-hidden h-[155vh] rounded-b-2xl border border-gray-200 bg-white">
         <Table
           className="table table-fixed min-w-full"
           removeWrapper
@@ -42,61 +47,67 @@ export default function TenantsTable() {
           shadow="sm"
           isHeaderSticky
           bottomContent={
-            <div className="flex w-full justify-center mt-10">
+            <div className="flex w-full justify-center mt-5">
               <Pagination
                 isCompact
-                showControls
+                showControls={false}
                 showShadow
                 color="secondary"
                 page={1}
-                total={2}
+                total={24}
+                classNames={{
+                  wrapper:
+                    "gap-0 overflow-visible h-8 rounded border border-divider",
+                  item: "w-8 h-8 text-small rounded-none bg-transparent",
+                  cursor: "!bg-red-500 !text-white font-bold shadow-lg",
+                }}
                 // onChange={(page) => setPage(page)}
               />
             </div>
           }
         >
-          <TableHeader className="bg-cyan-600">
+          <TableHeader>
             <TableColumn
               key="id"
-              className="min-w-[120px] text-gray-800 text-sm"
+              className="min-w-[120px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               ID
             </TableColumn>
             <TableColumn
               key="name"
-              className="min-w-[120px] text-gray-800 text-sm"
+              className="min-w-[120px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               Name
             </TableColumn>
             <TableColumn
-              key="phoneNumber"
-              className="min-w-[160px] text-gray-800 text-sm"
+              key="property-location"
+              className="min-w-[160px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               Property Location
             </TableColumn>
 
             <TableColumn
-              key="address"
-              className="min-w-[140px] text-gray-800 text-sm"
+              key="rent"
+              className="min-w-[140px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               Rent (monthly)
             </TableColumn>
 
             <TableColumn
-              key="email"
-              className="min-w-[140px] text-gray-800 text-sm"
+              key="phone-number"
+              className="min-w-[140px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               Phone Number
             </TableColumn>
             <TableColumn
-              key="phoneNumber"
-              className="min-w-[100px] text-gray-800 text-sm"
+              key="status"
+              className="min-w-[100px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               Status
             </TableColumn>
             <TableColumn
-              key="phoneNumber"
-              className="min-w-[100px] text-gray-800 text-sm"
+              key="actions"
+              className="min-w-[100px] bg-gray-100 font-semibold border-b text-black text-[13px]"
             >
               {undefined}
             </TableColumn>
@@ -110,36 +121,36 @@ export default function TenantsTable() {
               true ? "No drivers match your search" : "No drivers found"
             }
           >
-            {[...Array(7)].map((driver: any, index) => (
+            {[...Array(10)].map((driver: any, index) => (
               <TableRow
                 key={index}
-                className="hover:bg-gray-100 cursor-pointer transition-all"
-                onClick={() => router.push("/landlords/323232/30400230")}
+                className={` hover:bg-gray-100 border-b cursor-pointer transition-all`}
+                onClick={() => router.push("/landlords/tenants/21212")}
               >
-                <TableCell className="min-w-[120px] pl-6">
-                  <p className="text-gray-500 text-xs font-medium whitespace-nowrap text-center">
+                <TableCell className="min-w-[120px] pl-6 py-5">
+                  <p className="text-gray-800 text-xs font-medium whitespace-nowrap text-center">
                     #2030402
                   </p>
                 </TableCell>
-                <TableCell className="min-w-[120px] pl-6">
-                  <p className="text-gray-500 text-xs font-medium whitespace-nowrap text-center">
+                <TableCell className="min-w-[120px] pl-6 py-5">
+                  <p className="text-gray-800 text-xs font-medium whitespace-nowrap text-center">
                     John Doe Smith
                   </p>
                 </TableCell>
-                <TableCell className="min-w-[160px] text-center text-gray-500 text-xs">
+                <TableCell className="min-w-[160px] text-center py-5 text-gray-800 text-xs">
                   123 Main St, City
                 </TableCell>
-                <TableCell className="min-w-[140px] text-center text-gray-500 text-xs">
-                  $2,500/month
+                <TableCell className="min-w-[140px] text-center py-5 text-gray-800 text-xs">
+                  D2,500
                 </TableCell>
 
-                <TableCell className="min-w-[140px] text-center text-gray-500 text-xs">
+                <TableCell className="min-w-[140px] text-center py-5 text-gray-800 text-xs">
                   +1 234-567-8900
                 </TableCell>
-                <TableCell className="whitespace-nowrap px-3 py-5 text-xs text-gray-500 text-center min-w-[100px]">
+                <TableCell className="whitespace-nowrap px-3 py-5 text-xs text-gray-800 text-center min-w-[100px]">
                   {<Status paymentStatus="Pending" />}
                 </TableCell>
-                <TableCell className="whitespace-nowrap px-3 py-5 text-xs text-gray-500 text-center min-w-[100px]">
+                <TableCell className="whitespace-nowrap px-3 py-5 text-xs text-gray-800 text-center min-w-[100px]">
                   <Filter />
                 </TableCell>
               </TableRow>

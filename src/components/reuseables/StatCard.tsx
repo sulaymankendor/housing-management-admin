@@ -15,7 +15,7 @@ function StatCard({
         <div className="bg-cyan-100 p-2 rounded-full">{icon}</div>
         <h1 className="text-xs text-gray-600">{title}</h1>
       </div>
-      <p className="font-semibold text-xl mt-2 text-gray-800 ml-11">{stat}</p>
+      <p className="font-semibold text-[19px] mt-2 text-black ml-11">{stat}</p>
     </div>
   );
 }

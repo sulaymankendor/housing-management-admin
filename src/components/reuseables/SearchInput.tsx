@@ -1,14 +1,14 @@
 import { Search } from "lucide-react";
 import React from "react";
 
-function SearchInput() {
+function SearchInput({ placeholder }: { placeholder: string }) {
   return (
-    <div className="flex items-center gap-2 border  rounded-lg px-2 bg-white">
-      <Search className="text-gray-500" size={18} />
+    <div className="flex items-center gap-2 border rounded-lg px-2 bg-white">
+      <Search className="text-gray-600 size-4.5" />
       <input
         type="text"
-        placeholder="Search by name, id... "
-        className="h-9 border-none outline-none text-sm w-48 text-gray-800"
+        placeholder={placeholder}
+        className="h-9 border-none outline-none text-[13px] font-medium w-full text-black"
       />
     </div>
   );
