@@ -23,7 +23,6 @@ function AppLayout({
               src={"/trust-agency-logo.png"}
               alt="trust-agency-logo"
             />
-            <p className="font-semibold text-xs">Trust Agency</p>
           </div>
           <nav className="border-r bg-white border-r-gray-200 fixed top-0 bottom-0 w-[12rem] pt-21">
             <ul>
@@ -36,6 +35,11 @@ function AppLayout({
                 {
                   name: "Landlords",
                   href: "/landlords",
+                  icon: <Users size={15} />,
+                },
+                {
+                  name: "Expenditures",
+                  href: "/expenditures",
                   icon: <Users size={15} />,
                 },
                 {

@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Landlord {
+  id        String   @id @default(cuid())
+  landlordID  String
+  name      String?
+  phoneNumber      String?
+  propertyLocation      String[]
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  tenantID  String
+  landlordID  String
+  name      String?
+  phoneNumber      String?
+  propertyLocation      String
+  propertyType      String
+  moveInDate  String
+  rentFee     String
+  status      String
+}
+
+model LandlordExpense {
+  id        String   @id @default(cuid())
+  landlordID String
+  tenantID String
+  tenantName  String
+  propertyLocation    String  
+  propertyType    String  
+  items      String[]
+  totalAmount      String
+  amountPaid      String
+  amountDue      String
+  date  String
+  status String
+}
+
+model DepositeExpense {
+  id        String   @id @default(cuid())
+  landlordID String
+  tenantID String
+  tenantName  String
+  propertyLocation    String  
+  propertyType    String  
+  items      String[]
+  depositedAmount      String
+  expendedAmount      String
+  depositedDate  String
+}
+
+
+model Expenditure {
+  id        String   @id @default(cuid())
+  items      String[]
+  amount      String
+  paymentMethod String
+  expenseBy String
+  expenseType  String
+  date  String
+}
+
+model Receipt {
+  id        String   @id @default(cuid())
+  tenantID String
+  receiptNumber String
+  receivedFrom String
+  paidTo    String  
+  propertyType  String
+  amount    String  
+  monthPaidFor      String
+  paymentDate      String
+  paymentMethod  String
+  receivedFromPhoneNumber String
+}

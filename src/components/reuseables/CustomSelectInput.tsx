@@ -8,17 +8,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UseFormRegister } from "react-hook-form";
 
 export function CustomSelectInput({
+  width,
+  onChange,
+  value,
   placeholder,
   items,
 }: {
-  placeholder: string;
+  width?: string;
+  onChange: (...event: any[]) => void;
+  value: string;
+  placeholder?: string;
   items: string[];
 }) {
   return (
-    <Select>
-      <SelectTrigger className="text-xs shadow-none">
+    <Select onValueChange={onChange} value={value}>
+      <SelectTrigger
+        className={`text-xs shadow-none ${width ? width : "w-full"}`}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

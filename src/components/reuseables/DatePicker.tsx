@@ -31,48 +31,114 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime());
 }
 
+// Convert Date to ISO string
+function dateToString(date: Date | undefined): string {
+  if (!date || !isValidDate(date)) {
+    return "";
+  }
+  return date.toISOString();
+}
+
 export function DatePicker({
+  dateValue,
   width,
   placeholder,
+  onChange,
 }: {
+  dateValue?: string;
   width?: string;
   placeholder: string;
+  onChange: (date: string) => void;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date("2025-06-01")
+  const [date, setDate] = React.useState<Date | undefined>(() => {
+    if (!dateValue) return undefined;
+    const d = new Date(dateValue);
+    return isValidDate(d) ? d : undefined;
+  });
+  const [month, setMonth] = React.useState<Date | undefined>(
+    () => date || new Date()
   );
-  const [month, setMonth] = React.useState<Date | undefined>(date);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(() => formatDate(date));
+  React.useEffect(() => {
+    if (!dateValue) {
+      setDate(undefined);
+      setValue("");
+      setMonth(new Date());
+    } else {
+      const newDate = new Date(dateValue);
+      if (isValidDate(newDate)) {
+        setDate(newDate);
+        setValue(formatDate(newDate));
+        setMonth(newDate);
+      }
+    }
+  }, [dateValue]);
+  // Memoize onChange to prevent rerenders
+  const onChangeRef = React.useRef(onChange);
+  React.useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  const handleCalendarSelect = React.useCallback(
+    (selectedDate: Date | undefined) => {
+      setDate(selectedDate);
+      const formatted = formatDate(selectedDate);
+      setValue(formatted);
+      setOpen(false);
+      // Call onChange immediately for calendar selection (no debounce needed)
+      onChangeRef.current(dateToString(selectedDate));
+    },
+    []
+  );
+
+  const handleMonthChange = React.useCallback((newMonth: Date | undefined) => {
+    setMonth(newMonth);
+  }, []);
+
+  const handleInputChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = e.target.value;
+      setValue(inputValue);
+
+      const parsedDate = new Date(inputValue);
+      if (isValidDate(parsedDate)) {
+        setDate(parsedDate);
+        setMonth(parsedDate);
+        onChangeRef.current(dateToString(parsedDate));
+      } else {
+        onChangeRef.current("");
+      }
+    },
+    []
+  );
+
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setOpen(true);
+      }
+    },
+    []
+  );
 
   return (
     <div className={`flex flex-col gap-3 w-full ${width || "w-42"}`}>
       <div className="relative flex gap-2">
         <Input
-          id="date"
           value={value}
           placeholder={placeholder}
           className="bg-background pr-10"
-          onChange={(e) => {
-            const date = new Date(e.target.value);
-            setValue(e.target.value);
-            if (isValidDate(date)) {
-              setDate(date);
-              setMonth(date);
-            }
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown") {
-              e.preventDefault();
-              setOpen(true);
-            }
-          }}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               id="date-picker"
               variant="ghost"
+              type="button"
               className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
             >
               <CalendarIcon className="size-3.5 text-gray-600" />
@@ -90,12 +156,8 @@ export function DatePicker({
               selected={date}
               captionLayout="dropdown"
               month={month}
-              onMonthChange={setMonth}
-              onSelect={(date) => {
-                setDate(date);
-                setValue(formatDate(date));
-                setOpen(false);
-              }}
+              onMonthChange={handleMonthChange}
+              onSelect={handleCalendarSelect}
             />
           </PopoverContent>
         </Popover>
